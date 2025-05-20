@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  pooldisplay:
+    image: nginx
+    container_name: pooldisplay
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /appdata/pooldisplay:/config
+      - /appdata/pooldisplay/www:/usr/share/nginx/html:ro
+    networks:
+      - swag_default
+networks:
+  swag_default:
+    external: true
