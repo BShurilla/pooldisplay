@@ -1,0 +1,15 @@
+alias: Pump Cycle End - Stop at 18000 Gallons
+description: ""
+triggers:
+  - entity_id: counter.gallons_this_cycle
+    above: 17999
+    trigger: numeric_state
+conditions:
+  - condition: time
+    after: "08:00:00"
+actions:
+  - target:
+      entity_id: switch.esp32_pool_pump_pool_pump_run
+    action: switch.turn_off
+    data: {}
+mode: single

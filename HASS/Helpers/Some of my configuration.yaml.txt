@@ -1,0 +1,41 @@
+homeassistant:
+  packages: !include_dir_merge_named includes/packages
+template:
+  - sensor:
+      - name: "Pool Pump Status"
+        state: >
+          {% if is_state('switch.esp32_pool_pump_pool_pump_run', 'off') %}
+            off
+          {% elif states('input_boolean.pool_pump_manual') == 'on' %}
+            manual
+          {% elif is_state('switch.esp32_pool_pump_pool_pump_run', 'on') %}
+            schedule
+          {% else %}
+            off
+          {% endif %}
+input_boolean:
+  pool_pump_manual:
+    name: Pool Pump Manual Override
+    initial: off
+  quick_clean_mode:
+    name: Quick Clean Mode
+    initial: false
+
+# Enable NWS as a weather platform
+weather:
+  - platform: nws
+
+# Optional: expose the temperature as a separate sensor
+sensor:
+  - platform: template
+    sensors:
+      outdoor_temperature:
+        friendly_name: "Outdoor Temperature"
+        unit_of_measurement: "°F"
+        value_template: "{{ state_attr('weather.home', 'temperature') }}"
+
+input_datetime:
+  quick_clean_start:
+    name: Quick Clean Start Time
+    has_date: true
+    has_time: true

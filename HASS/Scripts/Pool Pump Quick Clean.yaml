@@ -1,0 +1,12 @@
+sequence:
+  - type: turn_on
+    device_id: 76c41aadc32b0f78dc094c0bcd4a3242
+    entity_id: 2e8c2db6a2e08dc4ba6f87895ea86530
+    domain: switch
+  - device_id: 76c41aadc32b0f78dc094c0bcd4a3242
+    domain: number
+    entity_id: 221bf12d1dd98a7e2c1d5f9b5be543bd
+    type: set_value
+    value: 1950
+alias: Pool Pump Quick Clean
+description: ""

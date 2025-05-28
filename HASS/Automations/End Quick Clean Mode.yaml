@@ -1,0 +1,19 @@
+alias: End Quick Clean Mode
+description: Turns off Quick Clean Mode after 8 hours
+triggers:
+  - minutes: /10
+    trigger: time_pattern
+conditions:
+  - condition: state
+    entity_id: input_boolean.quick_clean_mode
+    state: "on"
+  - condition: template
+    value_template: >
+      {{ now() >= (states('input_datetime.quick_clean_start') | as_datetime +
+      timedelta(hours=8)) }}
+actions:
+  - target:
+      entity_id: input_boolean.quick_clean_mode
+    action: input_boolean.turn_off
+    data: {}
+mode: single

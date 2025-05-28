@@ -1,0 +1,20 @@
+alias: Pump Cycle Step 3 - 1700 RPM at 12000 Gallons
+description: ""
+triggers:
+  - entity_id: counter.gallons_this_cycle
+    above: 11999
+    below: 18000
+    trigger: numeric_state
+conditions:
+  - condition: time
+    after: "08:00:00"
+  - condition: state
+    entity_id: timer.quick_clean_timer
+    state: idle
+actions:
+  - target:
+      entity_id: number.esp32_pool_pump_pump_target_rpm
+    data:
+      value: 1700
+    action: number.set_value
+mode: single

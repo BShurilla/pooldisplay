@@ -1,0 +1,21 @@
+alias: Pool Pump Manual Override - Turn On
+description: Set manual override if pump is turned on outside of automation
+triggers:
+  - entity_id: switch.esp32_pool_pump_pool_pump_run
+    to: "on"
+    trigger: state
+conditions:
+  - condition: not
+    conditions:
+      - condition: time
+        after: "07:59:00"
+        before: "08:01:00"
+  - condition: state
+    entity_id: input_boolean.pool_pump_manual
+    state: "off"
+actions:
+  - target:
+      entity_id: input_boolean.pool_pump_manual
+    action: input_boolean.turn_on
+    data: {}
+mode: single

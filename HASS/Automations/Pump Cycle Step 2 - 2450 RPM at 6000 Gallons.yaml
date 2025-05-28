@@ -1,0 +1,20 @@
+alias: Pump Cycle Step 2 - 2450 RPM at 6000 Gallons
+description: ""
+triggers:
+  - entity_id: counter.gallons_this_cycle
+    above: 5999
+    below: 12000
+    trigger: numeric_state
+conditions:
+  - condition: time
+    after: "08:00:00"
+  - condition: state
+    entity_id: timer.quick_clean_timer
+    state: idle
+actions:
+  - target:
+      entity_id: number.esp32_pool_pump_pump_target_rpm
+    data:
+      value: 2450
+    action: number.set_value
+mode: single

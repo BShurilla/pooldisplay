@@ -1,0 +1,20 @@
+alias: Pump Cycle Start - 3000 RPM at 8 AM
+description: ""
+triggers:
+  - at: "08:00:00"
+    trigger: time
+conditions:
+  - condition: state
+    entity_id: timer.quick_clean_timer
+    state: idle
+actions:
+  - target:
+      entity_id: switch.esp32_pool_pump_pool_pump_run
+    action: switch.turn_on
+    data: {}
+  - target:
+      entity_id: number.esp32_pool_pump_pump_target_rpm
+    data:
+      value: 3000
+    action: number.set_value
+mode: single

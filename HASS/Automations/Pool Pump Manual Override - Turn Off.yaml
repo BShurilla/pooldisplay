@@ -1,0 +1,13 @@
+alias: Pool Pump Manual Override - Turn Off
+description: Reset manual override when pump turns off
+triggers:
+  - entity_id: switch.esp32_pool_pump_pool_pump_run
+    to: "off"
+    trigger: state
+conditions: []
+actions:
+  - target:
+      entity_id: input_boolean.pool_pump_manual
+    action: input_boolean.turn_off
+    data: {}
+mode: single

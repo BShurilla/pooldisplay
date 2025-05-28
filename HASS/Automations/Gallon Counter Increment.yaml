@@ -1,0 +1,17 @@
+alias: Gallon Counter Increment
+description: ""
+triggers:
+  - minutes: /1
+    trigger: time_pattern
+conditions:
+  - condition: numeric_state
+    entity_id: sensor.pool_flow_monitor_flow_gpm
+    above: 0
+actions:
+  - repeat:
+      count: "{{ states('sensor.pool_flow_monitor_flow_gpm') | float | round(0) }}"
+      sequence:
+        - target:
+            entity_id: counter.gallons_this_cycle
+          action: counter.increment
+          data: {}

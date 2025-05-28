@@ -1,0 +1,14 @@
+alias: ✅ Flow Restored - Clear Alert
+description: ""
+triggers:
+  - entity_id: sensor.pool_flow_monitor_flow_gpm
+    above: 0.1
+    trigger: numeric_state
+conditions:
+  - condition: numeric_state
+    entity_id: sensor.esp32_pool_pump_pump_actual_rpm
+    above: 0
+actions:
+  - data:
+      notification_id: pool_pump_flow_warning
+    action: persistent_notification.dismiss

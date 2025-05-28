@@ -1,0 +1,4 @@
+Name - Gallons This Cycle
+icon - mdi:counter
+initial value - 0
+entity id - counter.gallons_this_cycle

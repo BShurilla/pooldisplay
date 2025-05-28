@@ -1,0 +1,193 @@
+body {
+  font-family: Arial, sans-serif;
+  background: url('background.jpg') center center / cover no-repeat;
+  color: #ffffff;
+  padding: 8px;
+  margin: 0;
+  width: 1024px;
+  height: 600px;
+  overflow: hidden;
+  box-sizing: border-box;
+  cursor: none;
+}
+#app {
+  max-width: 100%;
+  margin: 0 auto;
+}
+h1 {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+.status-card {
+  display: flex;
+  align-items: flex-start;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+.status-light {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #ffffff;
+  background-color: transparent;
+}
+.status-content {
+  flex: 1;
+}
+.status-info div {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+.card-title {
+  font-size: 16px;
+  margin: 0 0 6px 0;
+  padding-bottom: 3px;
+  border-bottom: 2px solid #ffffff;
+}
+.status-light.green { background-color: #28a745; }
+.status-light.blue { background-color: #007bff; }
+.status-light.red { background-color: #dc3545; }
+.status-light.yellow { background-color: #ffc107; }
+.status-light.off { background-color: transparent; border: 2px solid #bbb; }
+.gauge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+.gauge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px;
+  border-radius: 10px;
+  text-align: center;
+}
+.gauge-title {
+  font-size: 14px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 4px;
+}
+.gauge-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.dashboard-columns {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: calc(100% - 40px);
+}
+.column-left {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.column-right {
+  width: 60%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  gap: 10px;
+}
+.gauge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+}
+.gauge-title {
+  font-size: 14px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 4px;
+}
+.gauge-svg {
+  width: 100%;
+  max-width: 160px;
+  height: 100px;
+  margin: 0 auto;
+}
+.gauge-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-top: 4px;
+}
+.GaugeMeter {
+  margin: 0 auto;
+}
+.gauge-bar-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  height: 20px;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+.gauge-bar {
+  height: 100%;
+  background: linear-gradient(to right, #4caf50, #81c784);
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+  border-radius: 10px 0 0 10px;
+}
+.control-panel {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  border-radius: 10px;
+  margin-top: 6px;
+}
+.button-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+.control-button {
+  font-size: 16px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #444;
+  color: #fff;
+  flex: 1 1 45%;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.control-button.active {
+  background-color: #28a745; /* Green */
+}
+.control-button.power-on {
+  background-color: #28a745;
+}
+.control-button.power-off {
+  background-color: #dc3545;
+}
+.gauge canvas {
+  width: 160px;
+  height: 160px;
+  display: block;
+  margin: 0 auto;
+}
+.status-info div,
+.card-title {
+  font-size: 13px;
+}
+.gauge-title {
+  font-size: 12px;
+}
+.control-button {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+#btn-clean.active {
+  background-color: #4CAF50;
+  color: white;
+}

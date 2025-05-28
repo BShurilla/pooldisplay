@@ -1,0 +1,22 @@
+alias: Reset Gallons After Pump Idle
+description: ""
+triggers:
+  - entity_id:
+      - sensor.pool_flow_monitor_flow_gpm
+      - sensor.esp32_pool_pump_pump_actual_rpm
+    to: "0"
+    for: "00:02:00"
+    trigger: state
+conditions:
+  - condition: numeric_state
+    entity_id: sensor.pool_flow_monitor_flow_gpm
+    below: 0.1
+  - condition: numeric_state
+    entity_id: sensor.esp32_pool_pump_pump_actual_rpm
+    below: 1
+actions:
+  - target:
+      entity_id: counter.gallons_this_cycle
+    action: counter.reset
+    data: {}
+mode: single

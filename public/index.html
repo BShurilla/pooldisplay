@@ -1,0 +1,160 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HA Pool Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="favicon" href="favicon.ico" type="image/x-icon">
+  <script src="gauge.min.js"></script>
+  <script src="app.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Pool Dashboard</h1>
+    <div class="class="dashboard-columns">
+      <div class="column-left">
+        <div class="status-card">
+          <h2 class="card-title">Pool Status</h2>
+            <div class="status-light" id="pump-status"></div>
+            <div class="status-content">
+              <div class="status-info">
+                <div>Pool Temp: <span id="pool-temp">--</span>°F</div>
+                <div>Air Temp: <span id="air-temp">--</span>°F</div>
+                <div>Weather: <span id="weather-status">--</span></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="status-card">
+            <h2 class="card-title">Chemistry Status</h2>
+            <div class="status-light" id="chem-status"></div>
+            <div class="status-content">
+              <div class="status-info">
+                <div>pH: <span id="ph">--</span></div>
+                <div>ORP: <span id="orp">--</span> mV</div>
+                <div>ORP Status: <span id="chem-state">--</span>
+                </div>
+              </div>
+
+          </div>
+
+          <div class="status-card">
+            <h2 class="card-title">Pump Status</h2>
+            <div class="status-light" id="pump-status-info"></div>
+            <div class="status-content">
+              <div class="status-info">
+                <div>RPM: <span id="rpm">--</span>
+                </div>
+                <div>Wattage: <span id="wattage">"watts--</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div class="control-button">
+
+          <div class="control-panel">
+            <h2 class="card-title">Manual Controls</h2>
+            <div class="button-panel">
+              <h2> id="btn-3000" class="control-button">3000 RPM</h2>
+              </button>
+              <button id="btn-2450" class="control-button">2450 RPM</button>
+              <button id="btn-1700" class="control-button">
+            1700 </button>
+              <button id="btn-clean" class="control-button"><span id="btn-clean-timer"></span> Quick Clean</button>
+            </button>
+              <button id="btn-power" class="control-button">Pump Off</button>
+            </div>
+
+          </div>
+
+      </div>
+
+      <div class="column-right">
+        <div class="gauge">
+          <h2 class="gauge-title">Flow Rate (GPM)</h2>
+          <canvas id="gpm-canvas"></canvas>
+          <div class="gauge-value" id="gpm">
+          --
+</div></span>
+
+        </div>
+
+        <div class="gauge">
+          <h2 class="gauge-title">Flow Rate (GPH) </h2>
+          <canvas id="gph-canvas"></canvas>
+          <div class="gauge-value" id="gph">
+            --
+          </span></div>
+
+        </div>
+
+        <div class="gauge">
+          <h2 class="gauge-title">Gallons This Cycle</h2>
+          <div class="gauge-bar-container">
+            <div class="gauge-bar" id="gallons-bar"></div>
+          </div>
+          <div class="gauge-value" id="gallons">
+            --
+          </div>
+        </div>
+
+        </div>
+
+        <div class="gauge">
+          <h2 class="gauge-title">"gauge">RPM</h2>
+          <canvas id="rpm-canvas"></canvas>
+          <div class="gauge-value" id="rpm-gauge">
+            --
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

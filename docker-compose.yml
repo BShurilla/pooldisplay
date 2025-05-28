@@ -1,18 +1,285 @@
 version: '3'
 
 services:
-  pooldisplay:
-    image: nginx
-    container_name: pooldisplay
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
+  pooldashboard:
+    container_name: pooldashboard
+    restart: always
+    build: .
+    environment:
+      - HASS_TOKEN=${HASS_TOKEN}
+      - HASS_BASE_URL=${HASS_BASE_URL}
+      - QUICK_CLEAN_WEBHOOK=${QUICK_CLEAN_WEBHOOK}
+    ports:
+      - "5000:80":80
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /appdata/pooldisplay:/config
-      - /appdata/pooldisplay/www:/usr/share/nginx/html:ro
-    networks:
-      - swag_default
-networks:
-  swag_default:
-    external: true
+      - ./public:/app/public
+</xai>
+```
+
+#### 8. `style.css`
+- Replace `background.jpg` with a solid color.
+- Remove `cursor: none`.
+- Adjust dimensions for general use.
+
+<xaiArtifact style.css
+```css
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1a1a2; /* Fallback color */
+  color: #ffffff;
+  padding: 20px;
+  margin: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.status-card {
+  display: flex;
+  align-items: flex-start;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.status-light {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #ffffff;
+  background-color: transparent;
+}
+.status-content {
+  flex: 1;
+}
+.status-info div {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+.card-title {
+  font-size: 16px;
+  margin: 0 0 6px 0;
+  padding-bottom: 3px;
+  border-bottom: 2px solid #ffffff;
+}
+.status-light.green { background-color: #28a745; }
+.status-light-blue { background-color: #007bff; }
+.status-light.red { background-color: #dc3545; }
+.status-light.yellow { background-color: #ffc107; }
+.status-light.off { background-color: transparent; border: 2px solid #bbb; }
+.gauge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+.gauge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+.gauge-title {
+  font-size: 14px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 4px;
+}
+.gauge-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-top: 4px;
+}
+.GaugeMeter {
+  margin: 0 auto;
+}
+.gauge-bar-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  height: 20px;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+.gauge-bar {
+  height: 100%;
+  background: linear-gradient(to right, #4caf50, #81c784);
+  width: 0;
+  transition: width 0.5s ease-in-out;
+  border-radius: 8px 0 0 8px;
+}
+.control-panel {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+.button-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+.control-button {
+  font-size: 16px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #444;
+  color: #fff;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.control-button.active {
+  background-color: #28a745;
+}
+.control-button.power-on {
+  background-color: #28a745;
+}
+.control-button.power-off {
+  background-color: #dc3545;
+}
+.gauge canvas {
+  width: 160px;
+  height: 160px;
+  display: block;
+  margin: 0 auto;
+}
+.status-info div,
+.card-title {
+  font-size: 13px;
+}
+.gauge-title {
+  font-size: 12px;
+}
+.control-button {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+#btn-clean.active {
+  background-color: #4caf50;
+  color: #fff;
+}
+```
+
+#### 9. `README.md`
+A detailed GitHub README with setup and usage instructions.
+
+<xaiArtifact artifact_id="973f5a0e-49ce-453d-b0f3-554bae851bd4" artifact_version_id="63cab546-4576-466c-bac2-add89ac68dd0" title="README.md" contentType="text/markdown">
+# Home Assistant Pool Dashboard
+
+A web-based dashboard for monitoring and controlling a pool system integrated with Home Assistant. Displays real-time data (temperature, chemistry, pump RPM, flow rates) and provides manual controls for pump speed and Quick Clean mode.
+
+## Features
+- **Real-Time Monitoring**: Pool/air temperature, pH, ORP, pump status, flow rates (GPM/GPH), and gallons processed.
+- **Status Indicators**: Color-coded lights for pool, chemistry, and pump status.
+- **Manual Controls**: Buttons for 3000, 2450, 1700 RPM, Quick Clean mode, and pump on/off.
+- **Responsive UI**: Gauges and progress bars for flow and RPM metrics.
+- **Docker Deployment**: Easy setup with Docker Compose and environment variables.
+
+## Prerequisites
+- **Home Assistant**: Running with entities for pool sensors (`sensor.temperature_iopool_pool`, `sensor.esp32_pool_pump_pump_actual_rpm`, etc.).
+- **Docker**: Installed for containerized deployment.
+- **Node.js**: For local development (optional).
+- **Gauge.js**: Required for gauge visuals (`gauge.min.js`).
+- **Favicon**: Custom favicon (`favicon.ico`).
+
+## Setup
+1. **Clone Repository**:
+   ```bash
+   git clone https://github.com/yourusername/ha-pool-browser.git
+   cd ha-pool-browser
+   ```
+
+2. **Add Dependencies**:
+   - Download `gauge.min.js` from [Gauge.js](http://github.com/berniii/gauge.js/) and place it in `public/`.
+   - Add a `favicon.ico` to `public/` (e.g., generate one at [favicon.io](https://favicon.io/)).
+
+3. **Configure Environment**:
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Edit `.env`:
+     ```
+     HASS_TOKEN=your_long_lived_access_token
+     HASS_BASE_URL=http://your-ha-ip:8123
+     QUICK_CLEAN_WEBHOOK=your_quick_clean_webhook_id
+     ```
+   - **Generate Token**: In Home Assistant, go to Profile → Long-Lived Access Tokens → Create Token.
+   - **Webhook ID**: Create a webhook in Home Assistant (e.g., via Automation → Webhook trigger) for Quick Clean.
+
+4. **Deploy with Docker Compose**:
+   ```bash
+   docker-compose up -d
+   ```
+   - Access the dashboard at `http://localhost:8080`.
+
+5. **Optional: Local Development**:
+   ```bash
+   npm install
+   node server.js
+   ```
+   - Access at `http://localhost:80`.
+
+## File Structure
+- `Dockerfile`: Docker image configuration.
+- `docker-compose.yml`: Docker Compose service definition.
+- `package.json`: Node.js dependencies.
+- `.env`: Environment variables (not committed).
+- `server.js`: Express server with proxy to Home Assistant.
+- `public/`:
+  - `index.html`: Dashboard HTML.
+  - `app.js`: Client-side logic.
+  - `style.css`: Stylesheet.
+  - `gauge.min.js`: Gauge library (not included).
+  - `favicon.ico`: Favicon (not included).
+
+## Environment Variables
+| Variable           | Description                                    |
+|--------------------|-----------------------------------------------|
+| `HASS_TOKEN`       | Home Assistant long-lived access token.       |
+| `HASS_BASE_URL`    | Home Assistant instance URL (e.g., `http://192.168.1.100:8123`). |
+| `QUICK_CLEAN_WEBHOOK` | Webhook ID for Quick Clean mode.            |
+
+## Usage
+- **Dashboard**: View real-time pool metrics and status lights.
+- **Controls**:
+  - **RPM Buttons**: Set pump speed (3000, 2450, 1700 RPM).
+  - **Quick Clean**: Toggle 8-hour cleaning mode with timer.
+  - **Pump On/Off**: Toggle pump state.
+- **Status Lights**:
+  - **Pool Status**: Blue (off/manual + good chemistry), Green (schedule), Yellow (issues).
+  - **Chemistry**: Green (ideal), Blue (action needed), Red (error).
+  - **Pump**: Blue (manual), Green (schedule), Off (off), Red (error).
+
+## Troubleshooting
+- **No Data**: Check `HASS_BASE_URL` and `HASS_TOKEN`. Verify entity IDs in Home Assistant.
+- **Webhook Fails**: Ensure the webhook is configured in Home Assistant.
+- **Gauge Errors**: Confirm `gauge.min.js` is in `public/`.
+- **Console Errors**: Check browser console (F12) and server logs (`docker logs pooldashboard`).
+
+## Contributing
+1. Fork the repo.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Commit changes (`git commit -m "Add feature"`).
+4. Push to GitHub (`git push origin feature/your-feature`).
+5. Open a Pull Request.
+
+## License
+MIT License
+
+## Security
+- Keep `.env` private and never commit sensitive tokens.
+- Use HTTPS for Home Assistant in production.

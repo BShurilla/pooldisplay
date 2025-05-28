@@ -1,0 +1,23 @@
+alias: ⚠️ Pump Running But No Flow (3+ Minutes)
+description: Alerts if RPM > 0 but flow is zero for more than 3 minutes.
+triggers:
+  - entity_id:
+      - sensor.esp32_pool_pump_pump_actual_rpm
+      - sensor.pool_flow_monitor_flow_gpm
+    for: "00:03:00"
+    trigger: state
+conditions:
+  - condition: numeric_state
+    entity_id: sensor.esp32_pool_pump_pump_actual_rpm
+    above: 0
+  - condition: numeric_state
+    entity_id: sensor.pool_flow_monitor_flow_gpm
+    below: 0.1
+actions:
+  - data:
+      title: ⚠️ Pool Pump Flow Warning
+      message: >-
+        The pump is running (RPM > 0) but flow is 0 GPM. Please check for clogs,
+        closed valves, or airlocks.
+    action: notify.persistent_notification
+mode: single

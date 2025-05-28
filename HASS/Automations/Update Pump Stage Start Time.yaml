@@ -1,0 +1,28 @@
+alias: Update Pump Stage Start Time
+description: ""
+triggers:
+  - entity_id: counter.gallons_this_cycle
+    below: 1
+    trigger: numeric_state
+  - entity_id: counter.gallons_this_cycle
+    above: 5999
+    below: 6001
+    trigger: numeric_state
+  - entity_id: counter.gallons_this_cycle
+    above: 11999
+    below: 12001
+    trigger: numeric_state
+  - entity_id: counter.gallons_this_cycle
+    above: 17999
+    trigger: numeric_state
+conditions:
+  - condition: numeric_state
+    entity_id: sensor.esp32_pool_pump_pump_actual_rpm
+    above: 0
+actions:
+  - target:
+      entity_id: input_datetime.stage_start_time
+    data:
+      datetime: "{{ now().isoformat() }}"
+    action: input_datetime.set_datetime
+mode: single

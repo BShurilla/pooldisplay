@@ -1,0 +1,41 @@
+alias: Start Quick Clean Mode
+description: Activates Quick Clean Mode for 8 hours
+triggers:
+  - event_type: call_service
+    event_data:
+      domain: input_button
+      service: press
+      service_data:
+        entity_id: input_button.quick_clean_button
+    trigger: event
+  - trigger: webhook
+    allowed_methods:
+      - POST
+      - PUT
+      - GET
+    local_only: true
+    webhook_id: ""INSERT WEBHOOK ID HERE""
+conditions: []
+actions:
+  - target:
+      entity_id: input_datetime.quick_clean_start
+    data:
+      datetime: "{{ now().isoformat() }}"
+    action: input_datetime.set_datetime
+  - target:
+      entity_id: input_boolean.quick_clean_mode
+    action: input_boolean.turn_on
+    data: {}
+  - action: script.pool_pump_quick_clean
+    data: {}
+  - action: timer.start
+    metadata: {}
+    data: {}
+    target:
+      entity_id: timer.quick_clean_timer
+  - action: counter.reset
+    metadata: {}
+    data: {}
+    target:
+      entity_id: counter.gallons_this_cycle
+mode: single

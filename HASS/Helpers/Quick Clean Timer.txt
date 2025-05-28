@@ -1,0 +1,4 @@
+Name - Quick Clean Timer
+icon - mdi:timer
+duration - 8:00:00
+entity id - timer.quick_clean_timer
